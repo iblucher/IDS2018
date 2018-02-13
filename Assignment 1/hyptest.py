@@ -1,20 +1,31 @@
-
 # data is the datamatrix of the smoking dataset, e.g. as obtained by data = numpy.loadtxt('smoking.txt')
 # should return True if the null hypothesis is rejected and False otherwise, i.e. return p < 0.05
+import math
 import numpy as np
-from scipy.stats import ttest_ind, ttest_ind_from_stats
+from scipy.stats import ttest_ind, ttest_ind_from_stats, t
 
-def hyptest(smokers, nonsmokers):
+def hyptest(smokers, nonsmokers, sig):
 	[srow, scol] = np.shape(smokers)
 	[nrow, ncol] = np.shape(nonsmokers)
+	smean = smokers[:, 1].mean()
+	nmean = nonsmokers[:, 1].mean()
+	svar = smokers[:, 1].var(ddof = 1)
+	nvar = nonsmokers[:, 1].var(ddof = 1)
 
-	(t, p) = ttest_ind(smokers[:, 1], nonsmokers[:, 1], equal_var = False)
-	svar = smokers[:, 1].var()
-	nvar = nonsmokers[:, 1].var()
+	# Compute the two-sample t-statistic
+	tt = (smean - nmean) / np.sqrt(svar/srow + nvar/nrow)
 
-	s = svar/srow
-	n = nvar/ncol
-	den = np.sqrt(s + n)
-	tt = (smokers[:, 1].mean() - nonsmokers[:, 1].mean())/den
-	print(tt)
-	print("ttest_ind:            t = %g  p = %g" % (t, p))
+	# Compute the degrees of freedom
+	freedom = (svar/srow + nvar/nrow)**2 / (svar**2/(srow**2*srow - 1) +  nvar**2/(nrow**2*nrow - 1))
+	freedom = math.floor(freedom)
+	print(freedom)
+
+	# Compute p-value
+	p = 2 * t.cdf(-tt, freedom)
+
+	print("t = %g  p = %g" % (tt, p))
+
+	# Decide if null hypothesis can be rejected
+	if(p > sig):
+		return True
+	return False

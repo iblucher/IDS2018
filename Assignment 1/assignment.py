@@ -5,6 +5,7 @@ import hyptest as hp
 
 # Read the dataset from file
 data = np.loadtxt('smoking.txt')
+data = np.array(data)
 
 # Store dimensions of dataset
 [row, col] = np.shape(data)
@@ -39,4 +40,14 @@ plt.ylabel('FEV1 score')
 plt.show()
 
 # Make hypothesis test on the means
-hp.hyptest(smokers, nonsmokers)
+sig = 0.05
+t = hp.hyptest(smokers, nonsmokers, sig)
+print(t)
+
+# Plot bars representing age versus FEV1 scores
+plt.bar(data[:, 0], data[:, 1])
+plt.xlabel('Age')
+plt.ylabel('FEV1 score')
+plt.title('FEV1 score for ages from 3-19')
+plt.xlim(2, 20)
+plt.show()

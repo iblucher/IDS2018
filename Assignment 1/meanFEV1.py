@@ -3,7 +3,6 @@
 import numpy as np
 
 def meanFEV1(smokers, nonsmokers):
-
 	# Calculate the average FEV1 score for each group
 	smean = smokers[:, 1].mean()
 	nmean = nonsmokers[:, 1].mean()

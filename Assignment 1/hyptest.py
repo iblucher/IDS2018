@@ -5,6 +5,7 @@ import numpy as np
 from scipy.stats import ttest_ind, ttest_ind_from_stats, t
 
 def hyptest(smokers, nonsmokers, sig):
+	# Compute sample means and variances for smokers and non-smokers
 	[srow, scol] = np.shape(smokers)
 	[nrow, ncol] = np.shape(nonsmokers)
 	smean = smokers[:, 1].mean()

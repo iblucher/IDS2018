@@ -1,7 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import meanFEV1 as mf
-import hyptest as hp
+from meanFEV1 import meanFEV1
+from hyptest import hyptest
+from corr import corr
 
 # Read the dataset from file
 data = np.loadtxt('smoking.txt')
@@ -9,8 +10,6 @@ data = np.array(data)
 
 # Store dimensions of dataset
 [row, col] = np.shape(data)
-print(row)
-print(col)
 
 # Separate datset in smokers and non-smokers
 nonsmokers = []
@@ -23,14 +22,8 @@ for i in range(row):
 smokers = np.array(smokers)
 nonsmokers = np.array(nonsmokers)
 
-# Store dimensions of subgroups
-[srow, scol] = np.shape(smokers)
-[nrow, ncol] = np.shape(nonsmokers)
-print(srow)
-print(nrow)
-
 # Calculate means of FEV1 scores for both groups
-(smean, nmean) = mf.meanFEV1(smokers, nonsmokers)
+(smean, nmean) = meanFEV1(smokers, nonsmokers)
 
 # Plot boxplot of the two FEV1 scores
 labels = ['Smokers', 'Non-smokers']
@@ -41,13 +34,30 @@ plt.show()
 
 # Make hypothesis test on the means
 sig = 0.05
-t = hp.hyptest(smokers, nonsmokers, sig)
+t = hyptest(smokers, nonsmokers, sig)
 print(t)
 
 # Plot bars representing age versus FEV1 scores
 plt.bar(data[:, 0], data[:, 1])
 plt.xlabel('Age')
 plt.ylabel('FEV1 score')
-plt.title('FEV1 score for ages from 3-19')
+plt.title('FEV1 score for ages 3 to 19')
 plt.xlim(2, 20)
+plt.show()
+
+# Compute correlation between age and FEV1 scores
+r = corr(data[:, 0], data[:, 1])
+print(r)
+
+# Plot histograms over the age of subjects in each groups
+plt.hist(smokers[:, 0], edgecolor = 'k')
+plt.xlabel('Age of the subjects')
+plt.ylabel('Count')
+plt.title('Histogram over age of smokers')
+plt.show()
+
+plt.hist(nonsmokers[:, 0], edgecolor = 'k')
+plt.xlabel('Age of the subjects')
+plt.ylabel('Count')
+plt.title('Histogram over age of non-smokers')
 plt.show()

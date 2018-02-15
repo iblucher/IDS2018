@@ -3,4 +3,6 @@
 from scipy.stats import pearsonr
 
 def corr(x,y):
-	pass
+	# Calculate Pearson's correlation coefficient
+	(r, p) = pearsonr(x, y)
+	return r

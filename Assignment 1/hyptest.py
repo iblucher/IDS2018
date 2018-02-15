@@ -19,12 +19,11 @@ def hyptest(smokers, nonsmokers, sig):
 	# Compute the degrees of freedom
 	freedom = (svar/srow + nvar/nrow)**2 / (svar**2/(srow**2*srow - 1) +  nvar**2/(nrow**2*nrow - 1))
 	freedom = math.floor(freedom)
-	print(freedom)
 
 	# Compute p-value
 	p = 2 * t.cdf(-tt, freedom)
 
-	print("t = %g  p = %g" % (tt, p))
+	print("Exercise 3\n- t-statistic = %g\n- degrees of freedom = %g\n- p-value = %g\n" % (tt, freedom, p))
 
 	# Decide if null hypothesis can be rejected
 	if(p > sig):

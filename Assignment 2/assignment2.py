@@ -3,6 +3,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, zero_one_loss
 from sklearn.model_selection import KFold
 from sklearn import preprocessing
+from checkPerformance import checkPerformance
 
 # read training and test datasets
 dataTrain = np.loadtxt('IDSWeedCropTrain.csv', delimiter = ',')
@@ -14,12 +15,19 @@ yTrain = dataTrain[:, -1]
 xTest = dataTest[:, :-1]
 yTest = dataTest[:, -1]
 
-# initialize nearest neighbor classifier and fit the training data
-nn = KNeighborsClassifier(n_neighbors = 3)
-nn.fit(xTrain, yTrain)
+# INput argument que seleciona se quer normalizar os dados ou nao
 
-accTest = accuracy_score(yTest, nn.predict(xTest))
-print(accTest)
+# Exercise 1: nearest neighbor classification
+nnAccScore = checkPerformance(xTrain, yTrain, xTest, yTest, 1)
+print(nnAccScore)
+
+# data normalization
+scaler = preprocessing.StandardScaler().fit(xTrain)
+xTrainN = scaler.transform(xTrain)
+xTestN = scaler.transform(xTest)
+
+xTrain = xTrainN
+xTest = xTestN
 
 # cross-validation and hyperparameter selection
 avg_loss = []
@@ -38,3 +46,6 @@ for i in [1, 3, 5, 7, 9, 11]:
 
 avg_loss = np.array(avg_loss)
 print(avg_loss)
+
+knnAccScore = checkPerformance(xTrainN, yTrain, xTestN, yTest, 3)
+print(knnAccScore)

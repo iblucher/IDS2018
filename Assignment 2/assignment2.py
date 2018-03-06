@@ -21,8 +21,10 @@ xTest = dataTest[:, :-1]
 yTest = dataTest[:, -1]
 
 # Exercise 1: nearest neighbor classification
-nnAccScore = checkPerformance(xTrain, yTrain, xTest, yTest, 1)
-print('Exercise 1\n1-NN accuracy score = %g\n' % nnAccScore)
+nnAccScoreTrain = checkPerformance(xTrain, yTrain, xTrain, yTrain, 1)
+nnAccScoreTest = checkPerformance(xTrain, yTrain, xTest, yTest, 1)
+print('Exercise 1\n1-NN training accuracy score = %g' % nnAccScoreTrain)
+print('1-NN test accuracy score = %g\n' % nnAccScoreTest)
 
 # Exercise 4: data normalization
 if(a == 1):
@@ -44,9 +46,12 @@ for i in [1, 3, 5, 7, 9, 11]:
 
 # Exercise 3: evaluation of classification performance for k_best
 avg_loss = np.array(avg_loss)
-print('Average 0-1 loss for k values in [1, 3, 5, 7, 9, 11]')
+print('Exercise 2\nAverage 0-1 loss for k values in [1, 3, 5, 7, 9, 11]')
 print(avg_loss)
 print('\n')
 
-knnAccScore = checkPerformance(xTrain, yTrain, xTest, yTest, 3)
-print('Exercise 3\nk_best-NN accuracy score = %g\n' % knnAccScore)
+
+knnAccScoreTest = checkPerformance(xTrain, yTrain, xTest, yTest, 3)
+knnAccScoreTrain = checkPerformance(xTrain, yTrain, xTrain, yTrain, 3)
+print('Exercise 3\nk_best-NN training accuracy score = %g' % knnAccScoreTrain)
+print('k_best-NN test accuracy score = %g\n' % knnAccScoreTest)

@@ -5,6 +5,7 @@
 # note: make sure the order of the eigenvalues (the projected variance) is decreasing, and the eigenvectors have the same order as their associated eigenvalues
 from __future__ import division
 import numpy as np
+from sklearn.preprocessing import StandardScaler
 
 def pca(data):
     # M stands for number of dimensions and N stands for number of trials
@@ -12,23 +13,24 @@ def pca(data):
     [M, N] = data.shape
 
     # center data
-    mean = np.mean(data, axis = 0)
+    mean = np.mean(data, axis = 1)
+    print(mean)
     for i in range(M):
         data[i, :] = data[i, :] - mean[i]
-    #print(data)
+    print(data)
 
     # find covariance matrix
     datat = data.transpose()
     cov = np.dot(data, datat)
     cov = np.array(cov)
     cov_mat = 1 / N * cov
-    #print(cov_mat)
+    print(cov_mat)
 
     # find eigenvectors and eigenvalues
     (evals, evecs) = np.linalg.eig(cov_mat)
     evals = np.array(evals)
-    #print(evals)
-    #print(evecs)
+    print(evals)
+    print(evecs)
 
     # confirm eigenvectors have unit length 1
     for ev in evecs:
@@ -49,5 +51,8 @@ def pca(data):
     evecs_sorted = np.array(evecs_sorted)
     # this transposition is so that the eigenvectors are the column and not the row vectors of the evecs_sorted matrix
     evecs_sorted = evecs_sorted.transpose()
+
+    print(evals_sorted)
+    print(evecs_sorted)
 
     return (evals_sorted, evecs_sorted)

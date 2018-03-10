@@ -11,28 +11,21 @@ def pca(data):
     # M stands for number of dimensions and N stands for number of trials
     data = data.transpose()
     [M, N] = data.shape
-    print(M)
-    print(N)
 
     # center data
     mean = np.mean(data, axis = 1)
-    #print(mean)
     for i in range(M):
         data[i, :] = data[i, :] - mean[i]
-    #print(data)
 
     # find covariance matrix
     datat = data.transpose()
     cov = np.dot(data, datat)
     cov = np.array(cov)
     cov_mat = 1 / N * cov
-    #print(cov_mat)
 
     # find eigenvectors and eigenvalues
     (evals, evecs) = np.linalg.eig(cov_mat)
     evals = np.array(evals)
-    #print(evals)
-    #print(evecs)
 
     # confirm eigenvectors have unit length 1
     for ev in evecs:
@@ -53,8 +46,5 @@ def pca(data):
     evecs_sorted = np.array(evecs_sorted)
     # this transposition is so that the eigenvectors are the column and not the row vectors of the evecs_sorted matrix
     evecs_sorted = evecs_sorted.transpose()
-
-    #print(evals_sorted)
-    #print(evecs_sorted)
 
     return (evals_sorted, evecs_sorted)

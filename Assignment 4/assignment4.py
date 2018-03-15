@@ -19,6 +19,7 @@ plt.axis('equal')
 plt.xlabel('x-coordinates')
 plt.ylabel('y-coordinates')
 #plt.show()
+plt.close()
 
 # plot all cells on top of each other
 for i in range(r):
@@ -33,6 +34,7 @@ plt.xlabel('x-coordinates')
 plt.ylabel('y-coordinates')
 plt.axis('equal')
 #plt.show()
+plt.close()
 
 # Exercise 2
 evals, evecs, mean = pca(data_diatoms)
@@ -42,14 +44,16 @@ s2 = np.sqrt(evals[2])
 e0 = evecs[:, 0]
 e1 = evecs[:, 1]
 e2 = evecs[:, 2]
+temporal = [mean - 2*s0*e0, mean - s0*e0, mean, mean + s0*e0, mean + 2*s0*e0]
 
-spatial_var_x = []
-spatial_var_y = []
-spatial_var = mean - 2*s0*e0
-for i in range(0, c - 1, 2):
-    spatial_var_x.append(spatial_var[i])
-    spatial_var_y.append(spatial_var[i + 1])
-plt.scatter(spatial_var_x, spatial_var_y, marker = '.')
-plt.plot(spatial_var_x, spatial_var_y)
+for m in range(5):
+    spatial_var_x = []
+    spatial_var_y = []
+    spatial_var = temporal[m]
+    for i in range(0, c - 1, 2):
+        spatial_var_x.append(spatial_var[i])
+        spatial_var_y.append(spatial_var[i + 1])
+    plt.scatter(spatial_var_x, spatial_var_y, marker = '.')
+    plt.plot(spatial_var_x, spatial_var_y)
 plt.axis('equal')
 plt.show()

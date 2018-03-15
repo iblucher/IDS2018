@@ -10,13 +10,16 @@ def pca(data):
     # M stands for number of dimensions and N stands for number of trials
     data = data.transpose()
     [M, N] = data.shape
+    var = np.zeros_like(data)
 
-    # calculate mean
+    # center data
     mean = np.mean(data, axis = 1)
+    for i in range(M):
+        var[i, :] = data[i, :] - mean[i]
 
     # find covariance matrix
-    datat = data.transpose()
-    cov = np.dot(data, datat)
+    datat = var.transpose()
+    cov = np.dot(var, datat)
     cov = np.array(cov)
     cov_mat = 1 / N * cov
 

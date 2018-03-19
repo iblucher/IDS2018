@@ -44,12 +44,14 @@ s2 = np.sqrt(evals[2])
 e0 = evecs[:, 0]
 e1 = evecs[:, 1]
 e2 = evecs[:, 2]
-temporal = [mean - 2*s0*e0, mean - s0*e0, mean, mean + s0*e0, mean + 2*s0*e0]
+temporal0 = [mean - 2*s0*e0, mean - s0*e0, mean, mean + s0*e0, mean + 2*s0*e0]
+temporal1 = [mean - 2*s1*e1, mean - s1*e1, mean, mean + s1*e1, mean + 2*s1*e1]
+temporal2 = [mean - 2*s2*e2, mean - s2*e2, mean, mean + s2*e2, mean + 2*s2*e2]
 
 for m in range(5):
     spatial_var_x = []
     spatial_var_y = []
-    spatial_var = temporal[m]
+    spatial_var = temporal0[m]
     for i in range(0, c - 1, 2):
         spatial_var_x.append(spatial_var[i])
         spatial_var_y.append(spatial_var[i + 1])

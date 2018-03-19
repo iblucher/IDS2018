@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from pca import pca
+from visualize_var import visualize_var
 
 data_diatoms = np.loadtxt('diatoms.txt')
 r, c = data_diatoms.shape
@@ -48,14 +49,6 @@ temporal0 = [mean - 2*s0*e0, mean - s0*e0, mean, mean + s0*e0, mean + 2*s0*e0]
 temporal1 = [mean - 2*s1*e1, mean - s1*e1, mean, mean + s1*e1, mean + 2*s1*e1]
 temporal2 = [mean - 2*s2*e2, mean - s2*e2, mean, mean + s2*e2, mean + 2*s2*e2]
 
-for m in range(5):
-    spatial_var_x = []
-    spatial_var_y = []
-    spatial_var = temporal0[m]
-    for i in range(0, c - 1, 2):
-        spatial_var_x.append(spatial_var[i])
-        spatial_var_y.append(spatial_var[i + 1])
-    plt.scatter(spatial_var_x, spatial_var_y, marker = '.')
-    plt.plot(spatial_var_x, spatial_var_y)
-plt.axis('equal')
-plt.show()
+visualize_var(temporal0, c)
+visualize_var(temporal1, c)
+visualize_var(temporal2, c)

@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 from pca import pca
+from mds import mds
 from visualize_var import visualize_var
 
 data_diatoms = np.loadtxt('diatoms.txt')
@@ -50,9 +51,9 @@ temporal0 = [mean - 2*s0*e0, mean - s0*e0, mean, mean + s0*e0, mean + 2*s0*e0]
 temporal1 = [mean - 2*s1*e1, mean - s1*e1, mean, mean + s1*e1, mean + 2*s1*e1]
 temporal2 = [mean - 2*s2*e2, mean - s2*e2, mean, mean + s2*e2, mean + 2*s2*e2]
 
-visualize_var(temporal0, c)
-visualize_var(temporal1, c)
-visualize_var(temporal2, c)
+#visualize_var(temporal0, c)
+#visualize_var(temporal1, c)
+#visualize_var(temporal2, c)
 
 # Exercise 3
 data_toy = np.loadtxt('pca_toydata.txt')
@@ -66,7 +67,12 @@ x_test = data_test[:, :-1]
 y_test = data_test[:, -1]
 
 starting_point = np.vstack((x_train[0, ], x_train[1, ]))
-print(starting_point)
 kmeans = KMeans(n_clusters = 2, n_init = 1, init = starting_point, algorithm = 'full').fit(x_train)
 centers = kmeans.cluster_centers_
 print(centers)
+
+scaled_data = mds(x_train, 2)
+scaled_x = scaled_data[:, 0]
+scaled_y = scaled_data[:, 1]
+plt.scatter(scaled_x, scaled_y)
+plt.show()

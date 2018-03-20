@@ -5,6 +5,6 @@ import numpy as np
 from pca import pca
 
 def mds(data, d):
-    (evals, evecs) = pca(data)
+    (evals, evecs, mean) = pca(data)
     ev = evecs[:, 0:d]
     return(data.dot(ev))

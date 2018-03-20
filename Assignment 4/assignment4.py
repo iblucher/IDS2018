@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
 from pca import pca
 from visualize_var import visualize_var
 
@@ -57,3 +58,15 @@ visualize_var(temporal2, c)
 data_toy = np.loadtxt('pca_toydata.txt')
 
 # Exercise 4
+data_train = np.loadtxt('IDSWeedCropTrain.csv', delimiter = ',')
+data_test = np.loadtxt('IDSWeedCropTest.csv', delimiter = ',')
+x_train = data_train[:, :-1]
+y_train = data_train[:, -1]
+x_test = data_test[:, :-1]
+y_test = data_test[:, -1]
+
+starting_point = np.vstack((x_train[0, ], x_train[1, ]))
+print(starting_point)
+kmeans = KMeans(n_clusters = 2, n_init = 1, init = starting_point, algorithm = 'full').fit(x_train)
+centers = kmeans.cluster_centers_
+print(centers)

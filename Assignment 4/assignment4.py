@@ -52,3 +52,8 @@ temporal2 = [mean - 2*s2*e2, mean - s2*e2, mean, mean + s2*e2, mean + 2*s2*e2]
 visualize_var(temporal0, c)
 visualize_var(temporal1, c)
 visualize_var(temporal2, c)
+
+# Exercise 3
+data_toy = np.loadtxt('pca_toydata.txt')
+
+# Exercise 4

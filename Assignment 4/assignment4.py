@@ -57,6 +57,23 @@ temporal2 = [mean - 2*s2*e2, mean - s2*e2, mean, mean + s2*e2, mean + 2*s2*e2]
 
 # Exercise 3
 data_toy = np.loadtxt('pca_toydata.txt')
+scaled_toy = mds(data_toy, 2)
+scaled_toy_x = scaled_toy[:, 0]
+scaled_toy_y = scaled_toy[:, 1]
+plt.scatter(scaled_toy_x, scaled_toy_y)
+plt.axis('equal')
+plt.show()
+
+# Remove two last data points
+rt, ct = data_toy.shape
+new_data_toy = data_toy[:-2, :]
+scaled_new = mds(new_data_toy, 2)
+scaled_new_x = scaled_new[:, 0]
+scaled_new_y = scaled_new[:, 1]
+plt.scatter(scaled_new_x, scaled_new_y)
+plt.axis('equal')
+plt.show()
+
 
 # Exercise 4
 data_train = np.loadtxt('IDSWeedCropTrain.csv', delimiter = ',')
@@ -72,7 +89,13 @@ centers = kmeans.cluster_centers_
 print(centers)
 
 scaled_data = mds(x_train, 2)
+print(scaled_data.shape)
+print(y_train.shape)
 scaled_x = scaled_data[:, 0]
 scaled_y = scaled_data[:, 1]
+
+for i in range(len(scaled_x)):
+    
 plt.scatter(scaled_x, scaled_y)
+plt.axis('equal')
 plt.show()

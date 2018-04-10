@@ -5,6 +5,7 @@ from sklearn.ensemble import RandomForestClassifier
 from multivarlinreg import multivarlinreg
 from predict_linreg import predict_linreg
 from rmse import rmse
+from gradient_descent import gradient_descent
 
 # read in red wine dataset
 wine_train = np.loadtxt('redwine_training.txt')
@@ -33,7 +34,7 @@ t_3c = predict_linreg(x_wine_train, w_2c)
 rm_3c = rmse(y_wine_test, t_3c)
 #print(rm_3c)
 
-# exercise 4
+# exercise 4 and 5 (comprare with KNN classifier from Assignment 3)
 
 # read in crop dataset
 crop_train = np.loadtxt('IDSWeedCropTrain.csv', delimiter = ',')
@@ -43,9 +44,14 @@ x_crop_train = crop_train[:, :-1]
 y_crop_train = crop_train[:, -1]
 x_crop_test = crop_test[:, :-1]
 y_crop_test = crop_test[:, -1]
-scaler = preprocessing.StandardScaler().fit(x_crop_train)
+#scaler = preprocessing.StandardScaler().fit(x_crop_train)
 
 rfc = RandomForestClassifier(n_estimators = 50)
 rfc.fit(x_crop_train, y_crop_train)
 accTest = accuracy_score(y_crop_test, rfc.predict(x_crop_test))
 print(accTest)
+
+# exercise 6
+#gradient_descent()
+
+# exercise 7

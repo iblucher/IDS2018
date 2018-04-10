@@ -16,10 +16,6 @@ def gradient_descent():
         grad = 20*x - np.exp(-x/2) * 0.5
         x = x - lrate * grad
         it = it + 1
-        print(grad)
-        print(it)
 
     f = np.exp(-x/2) + 10 * (x ** 2)
     return f, it
-
-gradient_descent()

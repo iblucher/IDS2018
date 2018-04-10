@@ -9,6 +9,7 @@ from rmse import rmse
 from gradient_descent import gradient_descent
 from plot_iris import plot_iris
 from transform_labels import transform_labels
+from logreg import logreg
 
 # read in red wine dataset
 wine_train = np.loadtxt('redwine_training.txt')
@@ -58,17 +59,23 @@ accTest = accuracy_score(y_crop_test, rfc.predict(x_crop_test))
 #gradient_descent()
 
 # exercise 7
-iris2D1_train = np.loadtxt('Iris2D1_train.txt')
-iris2D1_test = np.loadtxt('Iris2D1_test.txt')
+iris2d1_train = np.loadtxt('Iris2D1_train.txt')
+iris2d1_test = np.loadtxt('Iris2D1_test.txt')
 iris2d2_train = np.loadtxt('Iris2D2_train.txt')
 iris2d2_test = np.loadtxt('Iris2D2_test.txt')
 
-iris2d1 = np.append(iris2D1_train, iris2D1_test, axis = 0)
+iris2d1 = np.append(iris2d1_train, iris2d1_test, axis = 0)
 iris2d2 = np.append(iris2d2_train, iris2d2_test, axis = 0)
 
 # plot iris datasets with color coded points
-plot_iris(iris2d1, 1)
-plot_iris(iris2d2, 2)
+#plot_iris(iris2d1, 1)
+#plot_iris(iris2d2, 2)
 
 # transform all zero labels into -1 so slide algorithm works
-iris2D1_train = transform_labels(iris2D1_train)
+iris2d1_train = transform_labels(iris2d1_train)
+iris2d1_test = transform_labels(iris2d1_test)
+iris2d2_train = transform_labels(iris2d2_train)
+iris2d2_test = transform_labels(iris2d2_train)
+
+ir, ic = iris2d1_train.shape
+w = logreg(iris2d1_train, np.zeros(ic))

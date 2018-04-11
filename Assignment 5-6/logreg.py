@@ -1,7 +1,7 @@
 from __future__ import division
 import numpy as np
 
-def logreg(data, w):
+def logreg(x, y, w):
 
     # initialize variables
     tol = 1.0e-4
@@ -10,13 +10,7 @@ def logreg(data, w):
     it = 0
     grad = 1
 
-    # separate labels from dataset
-    x = data[:, :-1]
-    y = data[:, -1]
     r, c = x.shape
-
-    # insert column of 1s into x matrix
-    x = np.c_[np.ones(r), x]
 
     # algorithm loop
     while np.linalg.norm(grad) > tol and it < max_iter:
@@ -31,8 +25,5 @@ def logreg(data, w):
         # step direction
         w = w - lrate * grad
         it = it + 1
-        #print(grad)
-        #print(np.linalg.norm(grad))
-        print(w)
 
     return w

@@ -1,6 +1,6 @@
 def transform_labels(data):
-    r, c = data.shape
+    r = len(data)
     for i in range(r):
-        if data[i, 2] ==  0:
-            data[i, 2] = -1
+        if data[i] ==  0:
+            data[i] = -1
     return data

@@ -5,6 +5,7 @@ from sklearn.metrics import accuracy_score, zero_one_loss
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.cluster import KMeans
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import KFold
 from multivarlinreg import multivarlinreg
 from predict_linreg import predict_linreg
 from rmse import rmse
@@ -141,3 +142,42 @@ im3 = Image.fromarray(c3.astype('uint8'), mode = 'L')
 im1.save('im1.png')
 im2.save('im2.png')
 im3.save('im3.png')
+
+xTrain = mnist_digits[0:900, ]
+yTrain = mnist_labels[0:900, ]
+xTest = mnist_digits[900:1125, ]
+yTest = mnist_labels[900:1125, ]
+
+# k neighbors classifier (exercise 9b)
+avg_loss = []
+for i in [1, 3, 5, 7, 9]:
+    knn = KNeighborsClassifier(n_neighbors = i)
+    # initialize cross-validation
+    cv = KFold(n_splits = 5)
+    loss = []
+    for train_index, test_index in cv.split(xTrain):
+        xTrainCV, xTestCV, yTrainCV, yTestCV = xTrain[train_index], xTrain[test_index], yTrain[train_index], yTrain[test_index]
+        knn.fit(xTrainCV, yTrainCV)
+        loss.append(zero_one_loss(yTestCV, knn.predict(xTestCV)))
+    loss = np.array(loss)
+    avg_loss.append(np.mean(loss, dtype = np.float64))
+print(avg_loss)
+
+nn = KNeighborsClassifier(n_neighbors = 1)
+nn.fit(xTrain, yTrain)
+accK = accuracy_score(yTest, nn.predict(xTest))
+print(accK)
+
+###############
+# Exercise 10 #
+###############
+
+# use PCA on MNIST dataset
+
+# plot cumulativa variance
+
+# run clustering with k = 3 (on projected data with 20 and 200 dimensions)
+
+# count percentages for both dimensions
+
+# knn classifier and n fold validation for both dimensions

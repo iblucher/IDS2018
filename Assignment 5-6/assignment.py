@@ -1,8 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from PIL import Image
 from sklearn.metrics import accuracy_score, zero_one_loss
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.cluster import KMeans
+from sklearn.neighbors import KNeighborsClassifier
 from multivarlinreg import multivarlinreg
 from predict_linreg import predict_linreg
 from rmse import rmse
@@ -16,7 +18,6 @@ from compute_percentages import compute_percentages
 ##############
 # Exercise 2 #
 ##############
-
 # read in red wine dataset
 wine_train = np.loadtxt('redwine_training.txt')
 wine_test = np.loadtxt('redwine_testing.txt')
@@ -37,7 +38,6 @@ w_2c = multivarlinreg(x_wine_train, y_wine_train)
 ##############
 # Exercise 3 #
 ##############
-
 t_3b = predict_linreg(x_wine_train[:, 0], w_2b)
 #print(t_3b)
 rm_3b = rmse(y_wine_test, t_3b)
@@ -50,7 +50,6 @@ rm_3c = rmse(y_wine_test, t_3c)
 ##############
 # Exercise 5 #
 ##############
-
 # read in crop dataset
 crop_train = np.loadtxt('IDSWeedCropTrain.csv', delimiter = ',')
 crop_test = np.loadtxt('IDSWeedCropTest.csv', delimiter = ',')
@@ -68,13 +67,11 @@ accTest = accuracy_score(y_crop_test, rfc.predict(x_crop_test))
 ##############
 # Exercise 6 #
 ##############
-
 #gradient_descent()
 
 ##############
 # Exercise 7 #
 ##############
-
 iris2d1_train = np.loadtxt('Iris2D1_train.txt')
 iris2d1_test = np.loadtxt('Iris2D1_test.txt')
 iris2d2_train = np.loadtxt('Iris2D2_train.txt')
@@ -122,12 +119,25 @@ x_iris2d2_test = np.c_[np.ones(x_iris2d2_test.shape[0]), x_iris2d2_test]
 mnist_digits = np.loadtxt('MNIST_179_digits.txt')
 mnist_labels = np.loadtxt('MNIST_179_labels.txt')
 
-starting_point = np.vstack((mnist_digits[0, ], mnist_digits[1, ], mnist_digits[2, ]))
-kmeans = KMeans(n_clusters = 3, n_init = 1, init = starting_point, algorithm = 'full').fit(mnist_digits)
+# figure out how to initialize starting point
+starting_point = np.vstack((mnist_digits[23, ], mnist_digits[394, ], mnist_digits[638, ]))
+kmeans = KMeans(n_clusters = 3, init = starting_point, algorithm = 'full').fit(mnist_digits)
 print(kmeans.labels_)
 print(kmeans.labels_.shape)
 
 p = compute_percentages(mnist_labels, kmeans.labels_)
 print(p)
 
-print(kmeans.cluster_centers_)
+centers = kmeans.cluster_centers_
+
+c1 = np.resize(centers[0, ], (28, 28))
+c2 = np.resize(centers[1, ], (28, 28))
+c3 = np.resize(centers[2, ], (28, 28))
+
+# create images from cluster centers
+im1 = Image.fromarray(c1.astype('uint8'), mode = 'L')
+im2 = Image.fromarray(c2.astype('uint8'), mode = 'L')
+im3 = Image.fromarray(c3.astype('uint8'), mode = 'L')
+im1.save('im1.png')
+im2.save('im2.png')
+im3.save('im3.png')

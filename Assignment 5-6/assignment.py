@@ -213,7 +213,7 @@ kmeans200 = KMeans(n_clusters = 3, n_init = 1, init = random_start(mnist_200), a
 # count percentages for both dimensions
 p_20 = compute_percentages(yTrain, kmeans20.labels_)
 p_200 = compute_percentages(yTrain, kmeans200.labels_)
-print(p_20)
+#print(p_20)
 print(p_200)
 
 # revert centroid projections back to full dimensional space for image drawing
@@ -221,7 +221,7 @@ ev20 = evecs[:, 0:20]
 ev20 = np.transpose(ev20)
 revert_20 = np.matmul(kmeans20.cluster_centers_, ev20)
 
-ev200 = eves[:, 0:200]
+ev200 = evecs[:, 0:200]
 ev200 = np.transpose(ev200)
 revert_200 = np.matmul(kmeans200.cluster_centers_, ev200)
 
@@ -229,8 +229,8 @@ for i in range(3):
     revert_20[i, :] += np.transpose(mean)
     revert_200[i, :] += np.transpose(mean)
 
-c1_20, c2_20, c3_20 = reshape_centers(revert_20)
-draw_images(c1_20.real, c2_20.real, c3_20.real)
+#c1_20, c2_20, c3_20 = reshape_centers(revert_20)
+#draw_images(c1_20.real, c2_20.real, c3_20.real)
 
 c1_200, c2_200, c3_200 = reshape_centers(revert_200)
 draw_images(c1_200.real, c2_200.real, c3_200.real)

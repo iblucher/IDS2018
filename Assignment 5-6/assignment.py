@@ -30,23 +30,30 @@ y_wine_test = wine_test[:, -1]
 
 # exercise 2b
 w_2b = multivarlinreg(x_wine_train[:, 0], y_wine_train)
-#print(w_2b)
+print('Exercise 2b: weight vector for only first feature')
+print(w_2b)
+print('\n')
 
 # exercise 2c
 w_2c = multivarlinreg(x_wine_train, y_wine_train)
-#print(w_2c)
+print('Exercise 2c: weigth vector for all features')
+print(w_2c)
+print('\n')
 
 ##############
 # Exercise 3 #
 ##############
-t_3b = predict_linreg(x_wine_train[:, 0], w_2b)
-#print(t_3b)
+t_3b = predict_linreg(x_wine_test[:, 0], w_2b)
 rm_3b = rmse(y_wine_test, t_3b)
-#print(rm_3b)
+print('Exercise 3b: RMSE score for only feature')
+print(rm_3b)
+print('\n')
 
-t_3c = predict_linreg(x_wine_train, w_2c)
+t_3c = predict_linreg(x_wine_test, w_2c)
 rm_3c = rmse(y_wine_test, t_3c)
-#print(rm_3c)
+print('Exercise 3c: RMSE score for all features')
+print(rm_3c)
+print('\n')
 
 ##############
 # Exercise 5 #

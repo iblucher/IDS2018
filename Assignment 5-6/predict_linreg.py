@@ -5,5 +5,5 @@ def predict_linreg(x, w):
     r = len(x)
     x = np.c_[np.ones(r), x]
 
-    t = np.dot(x, w)
+    t = np.matmul(x, w)
     return t

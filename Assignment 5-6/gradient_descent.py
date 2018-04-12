@@ -1,5 +1,6 @@
 from __future__ import division
 import numpy as np
+import matplotlib.pyplot as plt
 
 def gradient_descent():
 
@@ -9,13 +10,18 @@ def gradient_descent():
     lrate = 0.0001
     it = 0
 
-    grad = 20*x - np.exp(-x/2) * 0.5
+    grad = 20*x - 0.5 * np.exp(-x/2)
     print(np.linalg.norm(grad))
 
     while np.linalg.norm(grad) > tol and it < max_iter:
-        grad = 20*x - np.exp(-x/2) * 0.5
+        grad = 20*x - 0.5 * np.exp(-x/2)
+        print(grad)
         x = x - lrate * grad
         it = it + 1
 
     f = np.exp(-x/2) + 10 * (x ** 2)
     return f, it
+
+f, it = gradient_descent()
+print(f)
+print(it)

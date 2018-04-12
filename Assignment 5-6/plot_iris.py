@@ -12,4 +12,5 @@ def plot_iris(iris, flag):
         plt.ylabel('Feature 2')
     elif flag == 2:
         plt.ylabel('Feature 1')
+    plt.axis('equal')
     plt.show()

@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from PIL import Image
 from sklearn.metrics import accuracy_score, zero_one_loss
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.cluster import KMeans
@@ -30,30 +29,30 @@ y_wine_test = wine_test[:, -1]
 
 # exercise 2b
 w_2b = multivarlinreg(x_wine_train[:, 0], y_wine_train)
-print('Exercise 2b: weight vector for only first feature')
-print(w_2b)
-print('\n')
+#print('Exercise 2b: weight vector for only first feature')
+#print(w_2b)
+#print('\n')
 
 # exercise 2c
 w_2c = multivarlinreg(x_wine_train, y_wine_train)
-print('Exercise 2c: weigth vector for all features')
-print(w_2c)
-print('\n')
+#print('Exercise 2c: weigth vector for all features')
+#print(w_2c)
+#print('\n')
 
 ##############
-# Exercise 3 #
+# Exercise 3 #r
 ##############
 t_3b = predict_linreg(x_wine_test[:, 0], w_2b)
 rm_3b = rmse(y_wine_test, t_3b)
-print('Exercise 3b: RMSE score for only feature')
-print(rm_3b)
-print('\n')
+#print('Exercise 3b: RMSE score for only feature')
+#print(rm_3b)
+#print('\n')
 
 t_3c = predict_linreg(x_wine_test, w_2c)
 rm_3c = rmse(y_wine_test, t_3c)
-print('Exercise 3c: RMSE score for all features')
-print(rm_3c)
-print('\n')
+#print('Exercise 3c: RMSE score for all features')
+#print(rm_3c)
+#print('\n')
 
 ##############
 # Exercise 5 #
@@ -69,8 +68,10 @@ y_crop_test = crop_test[:, -1]
 
 rfc = RandomForestClassifier(n_estimators = 50)
 rfc.fit(x_crop_train, y_crop_train)
-accTest = accuracy_score(y_crop_test, rfc.predict(x_crop_test))
-#print(accTest)
+accTestRF = accuracy_score(y_crop_test, rfc.predict(x_crop_test))
+#print('Exercise 5: accuracy score for Random Forest classifier')
+#print(accTestRF)
+#print('\n')
 
 ##############
 # Exercise 6 #
@@ -111,12 +112,14 @@ x_iris2d2_train = np.c_[np.ones(x_iris2d2_train.shape[0]), x_iris2d2_train]
 x_iris2d2_test = np.c_[np.ones(x_iris2d2_test.shape[0]), x_iris2d2_test]
 
 #w2d1 = logreg(x_iris2d1_train, y_iris2d1_train, np.zeros(iris2d1_train.shape[1]))
+#print(w2d1)
 #pred_2d1 = predict_logreg(x_iris2d1_test, w2d1)
 #loss_2d1 = zero_one_loss(y_iris2d1_test, pred_2d1)
 #print(loss_2d1)
 
 
 #w2d2 = logreg(x_iris2d2_train, y_iris2d2_train, np.zeros(iris2d2_train.shape[1]))
+#print(w2d2)
 #pred_2d2 = predict_logreg(x_iris2d2_test, w2d2)
 #loss_2d2 = zero_one_loss(y_iris2d2_test, pred_2d2)
 #print(loss_2d2)
@@ -128,8 +131,15 @@ mnist_digits = np.loadtxt('MNIST_179_digits.txt')
 mnist_labels = np.loadtxt('MNIST_179_labels.txt')
 
 # figure out how to initialize starting point
-starting_point = np.vstack((mnist_digits[23, ], mnist_digits[394, ], mnist_digits[638, ]))
-kmeans = KMeans(n_clusters = 3, init = starting_point, algorithm = 'full').fit(mnist_digits)
+
+# initialize random staring_point
+init1 = mnist_digits[np.random.choice(len(mnist_digits))]
+init2 = mnist_digits[np.random.choice(len(mnist_digits))]
+init3 = mnist_digits[np.random.choice(len(mnist_digits))]
+
+starting_point = np.vstack((init1, init2, init3))
+
+kmeans = KMeans(n_clusters = 3, n_init = 1, init = starting_point, algorithm = 'full').fit(mnist_digits)
 print(kmeans.labels_)
 print(kmeans.labels_.shape)
 
@@ -138,17 +148,17 @@ print(p)
 
 centers = kmeans.cluster_centers_
 
-c1 = np.resize(centers[0, ], (28, 28))
-c2 = np.resize(centers[1, ], (28, 28))
-c3 = np.resize(centers[2, ], (28, 28))
+c1 = np.reshape(centers[0, ], (28, 28))
+c2 = np.reshape(centers[1, ], (28, 28))
+c3 = np.reshape(centers[2, ], (28, 28))
 
 # create images from cluster centers
-im1 = Image.fromarray(c1.astype('uint8'), mode = 'L')
-im2 = Image.fromarray(c2.astype('uint8'), mode = 'L')
-im3 = Image.fromarray(c3.astype('uint8'), mode = 'L')
-im1.save('im1.png')
-im2.save('im2.png')
-im3.save('im3.png')
+plt.imshow(c1)
+plt.show()
+plt.imshow(c2)
+plt.show()
+plt.imshow(c3)
+plt.show()
 
 xTrain = mnist_digits[0:900, ]
 yTrain = mnist_labels[0:900, ]

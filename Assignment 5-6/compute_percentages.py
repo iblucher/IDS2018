@@ -13,9 +13,9 @@ def compute_percentages(labels, clusters):
         elif labels[i] == 9:
             counter[clusters[i], 2] += 1
 
-    print(counter)
+    #print(counter)
     total = np.sum(counter, axis = 1)
-    print(total)
+    #print(total)
 
     percentages = np.zeros((3, 3))
     for i in range(3):

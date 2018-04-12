@@ -1,3 +1,5 @@
+# Python packages imports
+from __future__ import division
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score, zero_one_loss
@@ -5,6 +7,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.cluster import KMeans
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import KFold
+
+# Created functions for the assignment
 from multivarlinreg import multivarlinreg
 from predict_linreg import predict_linreg
 from rmse import rmse
@@ -14,6 +18,11 @@ from transform_labels import transform_labels
 from logreg import logreg
 from predict_logreg import predict_logreg
 from compute_percentages import compute_percentages
+from pca import pca
+from mds import mds
+from random_start import random_start
+from reshape_centers import reshape_centers
+from draw_images import draw_images
 
 ##############
 # Exercise 2 #
@@ -133,32 +142,18 @@ mnist_labels = np.loadtxt('MNIST_179_labels.txt')
 # figure out how to initialize starting point
 
 # initialize random staring_point
-init1 = mnist_digits[np.random.choice(len(mnist_digits))]
-init2 = mnist_digits[np.random.choice(len(mnist_digits))]
-init3 = mnist_digits[np.random.choice(len(mnist_digits))]
-
-starting_point = np.vstack((init1, init2, init3))
+starting_point = random_start(mnist_digits)
 
 kmeans = KMeans(n_clusters = 3, n_init = 1, init = starting_point, algorithm = 'full').fit(mnist_digits)
-print(kmeans.labels_)
-print(kmeans.labels_.shape)
+#print(kmeans.labels_)
+#print(kmeans.labels_.shape)
 
 p = compute_percentages(mnist_labels, kmeans.labels_)
-print(p)
+#print(p)
 
 centers = kmeans.cluster_centers_
-
-c1 = np.reshape(centers[0, ], (28, 28))
-c2 = np.reshape(centers[1, ], (28, 28))
-c3 = np.reshape(centers[2, ], (28, 28))
-
-# create images from cluster centers
-plt.imshow(c1)
-plt.show()
-plt.imshow(c2)
-plt.show()
-plt.imshow(c3)
-plt.show()
+c1, c2, c3 = reshape_centers(centers)
+#draw_images(c1, c2, c3)
 
 xTrain = mnist_digits[0:900, ]
 yTrain = mnist_labels[0:900, ]
@@ -178,23 +173,67 @@ for i in [1, 3, 5, 7, 9]:
         loss.append(zero_one_loss(yTestCV, knn.predict(xTestCV)))
     loss = np.array(loss)
     avg_loss.append(np.mean(loss, dtype = np.float64))
-print(avg_loss)
+#print(avg_loss)
 
 nn = KNeighborsClassifier(n_neighbors = 1)
 nn.fit(xTrain, yTrain)
 accK = accuracy_score(yTest, nn.predict(xTest))
-print(accK)
+#print(accK)
 
 ###############
 # Exercise 10 #
 ###############
 
+# the training data is the first 900 entries of mnist_digits
 # use PCA on MNIST dataset
+evals, evecs, mean = pca(xTrain)
 
 # plot cumulativa variance
+total = np.sum(evals)
+cumulative_var = []
+s = 0
+for ev in evals:
+    s = s + ev/total
+    cumulative_var.append(s)
+plt.plot(cumulative_var)
+plt.xlabel('Used PCs index')
+plt.ylabel('Cumulative variance')
+#plt.show()
+plt.close()
 
 # run clustering with k = 3 (on projected data with 20 and 200 dimensions)
+mnist_20 = mds(xTrain, 20)
+mnist_200 = mds(xTrain, 200)
+print(mnist_20.shape)
+print(mnist_200.shape)
+
+kmeans20 = KMeans(n_clusters = 3, n_init = 1, init = random_start(mnist_20), algorithm = 'full').fit(mnist_20)
+kmeans200 = KMeans(n_clusters = 3, n_init = 1, init = random_start(mnist_200), algorithm = 'full').fit(mnist_200)
 
 # count percentages for both dimensions
+p_20 = compute_percentages(yTrain, kmeans20.labels_)
+p_200 = compute_percentages(yTrain, kmeans200.labels_)
+print(p_20)
+print(p_200)
+
+# revert centroid projections back to full dimensional space for image drawing
+ev20 = evecs[:, 0:20]
+ev20 = np.transpose(ev20)
+revert_20 = np.matmul(kmeans20.cluster_centers_, ev20)
+
+ev200 = eves[:, 0:200]
+ev200 = np.transpose(ev200)
+revert_200 = np.matmul(kmeans200.cluster_centers_, ev200)
+
+for i in range(3):
+    revert_20[i, :] += np.transpose(mean)
+    revert_200[i, :] += np.transpose(mean)
+
+c1_20, c2_20, c3_20 = reshape_centers(revert_20)
+draw_images(c1_20.real, c2_20.real, c3_20.real)
+
+c1_200, c2_200, c3_200 = reshape_centers(revert_200)
+draw_images(c1_200.real, c2_200.real, c3_200.real)
+
 
 # knn classifier and n fold validation for both dimensions
